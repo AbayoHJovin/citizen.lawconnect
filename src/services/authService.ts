@@ -54,37 +54,7 @@ export const loginByEmail = async (
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {
-      const errorMessage = error.response?.data?.message || "Login failed";
-      const errorCode = error.response?.data?.code || "AUTH_ERROR";
-      throw {
-        message: errorMessage,
-        code: errorCode,
-      } as AuthError;
-    }
-    throw {
-      message: "An unexpected error occurred",
-      code: "UNKNOWN_ERROR",
-    } as AuthError;
-  }
-};
-
-export const loginByPhone = async (
-  phone: string,
-  password: string
-): Promise<LoginResponse> => {
-  try {
-    const response = await API.post<LoginResponse>(
-      "/citizens/login-by-phone",
-      {
-        phone,
-        password,
-      },
-      { withCredentials: true }
-    );
-    return response.data;
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      const errorMessage = error.response?.data?.message || "Login failed";
+      const errorMessage = error.response?.data?.message || "Invalid credentials";
       const errorCode = error.response?.data?.code || "AUTH_ERROR";
       throw {
         message: errorMessage,

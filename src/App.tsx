@@ -21,6 +21,8 @@ import Lawyers from "@/pages/Lawyers";
 import LawyerProfile from "@/pages/LawyerProfile";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
+import ForgotPassword from "@/pages/ForgotPassword";
+import ResetPassword from "@/pages/ResetPassword";
 import Dashboard from "@/pages/Dashboard";
 import Profile from "@/pages/Profile";
 import Consultations from "@/pages/Consultations";
@@ -62,6 +64,8 @@ function AppRoutes() {
         }
       />
       <Route path="/register" element={<Register />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/lawyers" element={<Lawyers />} />
       <Route path="/lawyers/:lawyerId" element={<LawyerProfile />} />
 

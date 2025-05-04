@@ -2,11 +2,7 @@ import { useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/store";
-import {
-  clearError,
-  loginByEmailThunk,
-  loginByPhoneThunk,
-} from "@/store/slices/authSlice";
+import { clearError, loginByEmailThunk } from "@/store/slices/authSlice";
 import { RootState } from "@/store";
 
 import { Button } from "@/components/ui/button";
@@ -32,7 +28,6 @@ const Login = () => {
   );
 
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
 
   // Redirect if coming from a specific page
@@ -58,23 +53,6 @@ const Login = () => {
     }
   };
 
-  const handlePhoneLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!phone || !password) {
-      dispatch(clearError());
-      return;
-    }
-
-    try {
-      await dispatch(
-        loginByPhoneThunk({ phoneNumber: phone, password })
-      ).unwrap();
-      navigate(from, { replace: true });
-    } catch (err) {
-      console.error("Login failed:", err);
-    }
-  };
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-muted/50 px-4">
       <div className="w-full max-w-md">
@@ -91,14 +69,13 @@ const Login = () => {
           <CardHeader>
             <CardTitle className="text-2xl text-center">Sign In</CardTitle>
             <CardDescription className="text-center">
-              Access your account using email or phone
+              Access your account using email
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Tabs defaultValue="email" className="w-full">
+            <Tabs defaultValue="email" className="">
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="email">Email</TabsTrigger>
-                <TabsTrigger value="phone">Phone</TabsTrigger>
               </TabsList>
               <TabsContent value="email">
                 <form onSubmit={handleEmailLogin} className="space-y-4">
@@ -114,7 +91,15 @@ const Login = () => {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="password">Password</Label>
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="password">Password</Label>
+                      <Link
+                        to="/forgot-password"
+                        className="text-sm text-primary hover:underline"
+                      >
+                        Forgot password?
+                      </Link>
+                    </div>
                     <Input
                       id="password"
                       type="password"
@@ -131,40 +116,6 @@ const Login = () => {
                   )}
                   <Button type="submit" className="w-full" disabled={loading}>
                     {loading ? "Signing in..." : "Sign In with Email"}
-                  </Button>
-                </form>
-              </TabsContent>
-              <TabsContent value="phone">
-                <form onSubmit={handlePhoneLogin} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="phone">Phone Number</Label>
-                    <Input
-                      id="phone"
-                      type="tel"
-                      placeholder="Enter your phone number"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="password">Password</Label>
-                    <Input
-                      id="password"
-                      type="password"
-                      placeholder="Enter your password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                    />
-                  </div>
-                  {error && (
-                    <Alert variant="destructive">
-                      <AlertDescription>{error}</AlertDescription>
-                    </Alert>
-                  )}
-                  <Button type="submit" className="w-full" disabled={loading}>
-                    {loading ? "Signing in..." : "Sign In with Phone"}
                   </Button>
                 </form>
               </TabsContent>

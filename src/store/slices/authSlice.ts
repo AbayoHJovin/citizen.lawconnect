@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   loginByEmail,
-  loginByPhone,
   refreshAccessToken,
   setAccessToken,
   getAccessToken,
@@ -54,10 +53,6 @@ interface LoginByEmailPayload {
   password: string;
 }
 
-interface LoginByPhonePayload {
-  phoneNumber: string;
-  password: string;
-}
 
 interface RegisterPayload {
   fullName: string;
@@ -199,35 +194,7 @@ export const loginByEmailThunk = createAsyncThunk(
     } catch (error: unknown) {
       const authError = error as AuthError;
       return rejectWithValue(
-        authError.response?.data?.message || "Login failed"
-      );
-    }
-  }
-);
-
-export const loginByPhoneThunk = createAsyncThunk(
-  "auth/loginByPhone",
-  async (credentials: LoginByPhonePayload, { rejectWithValue }) => {
-    try {
-      const response = await loginByPhone(
-        credentials.phoneNumber,
-        credentials.password
-      );
-      setAccessToken(response.accessToken);
-
-      // Fetch complete user data using the email from the login response
-      const userResponse = await API.get<ApiResponse<CitizenDto>>(
-        `/citizens/find-by-email?email=${response.citizen.email}`
-      );
-
-      return {
-        accessToken: response.accessToken,
-        citizen: userResponse.data.data,
-      };
-    } catch (error: unknown) {
-      const authError = error as AuthError;
-      return rejectWithValue(
-        authError.response?.data?.message || "Login failed"
+        authError.response?.data?.message || "Invalid credentials"
       );
     }
   }
@@ -392,24 +359,7 @@ const authSlice = createSlice({
         state.error = action.payload as string;
         removeAccessToken();
       })
-      // Login by Phone
-      .addCase(loginByPhoneThunk.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(loginByPhoneThunk.fulfilled, (state, action) => {
-        state.isAuthenticated = true;
-        state.user = action.payload.citizen;
-        state.loading = false;
-        state.error = null;
-      })
-      .addCase(loginByPhoneThunk.rejected, (state, action) => {
-        state.isAuthenticated = false;
-        state.user = null;
-        state.loading = false;
-        state.error = action.payload as string;
-        removeAccessToken();
-      })
+
       // Refresh Token
       .addCase(refreshTokenThunk.pending, (state) => {
         state.loading = true;
