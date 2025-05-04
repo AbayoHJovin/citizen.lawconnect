@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import API from "@/lib/axios";
+import { ApiResponse } from "@/types/api";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -40,7 +41,10 @@ const ForgotPassword = () => {
     setIsLoading(true);
 
     try {
-      const response = await API.post("/password/forgot-password", { email });
+      const response = await API.post<ApiResponse>(
+        "/password/forgot-password",
+        { email }
+      );
 
       if (response.data && response.data.message) {
         setIsEmailSent(true);

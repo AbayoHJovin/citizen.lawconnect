@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import API from "@/lib/axios";
+import { ApiResponse } from "@/types/api";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -115,7 +116,7 @@ const ResetPassword = () => {
     setIsLoading(true);
 
     try {
-      const response = await API.post("/password/reset-password", {
+      const response = await API.post<ApiResponse>("/password/reset-password", {
         token,
         password: formData.password,
         confirmPassword: formData.confirmPassword,

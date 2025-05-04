@@ -100,7 +100,7 @@ export const getLawyerRatings = async (
   lawyerId: string
 ): Promise<ApiListResponse<RatingDto>> => {
   const response = await API.get<ApiListResponse<RatingDto>>(
-    `/lawyers/get-all-rating/${lawyerId}`
+    `/lawyers/get-rating-by-lawyerId/${lawyerId}`
   );
   return response.data;
 };

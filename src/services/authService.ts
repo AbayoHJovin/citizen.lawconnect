@@ -1,6 +1,7 @@
 import API from "../lib/axios";
 import { jwtDecode } from "jwt-decode";
 import { AxiosError } from "axios";
+import { ApiResponse } from "@/types/api";
 
 export interface LoginResponse {
   accessToken: string;
@@ -54,7 +55,8 @@ export const loginByEmail = async (
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {
-      const errorMessage = error.response?.data?.message || "Invalid credentials";
+      const errorMessage =
+        error.response?.data?.message || "Invalid credentials";
       const errorCode = error.response?.data?.code || "AUTH_ERROR";
       throw {
         message: errorMessage,
