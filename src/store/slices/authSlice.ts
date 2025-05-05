@@ -53,7 +53,6 @@ interface LoginByEmailPayload {
   password: string;
 }
 
-
 interface RegisterPayload {
   fullName: string;
   email: string;
@@ -165,9 +164,7 @@ export const checkAuth = createAsyncThunk(
     } catch (error: unknown) {
       const authError = error as AuthError;
       removeAccessToken();
-      return rejectWithValue(
-        authError.response?.data?.message || "Authentication check failed"
-      );
+      return rejectWithValue(authError.response?.data?.message || "");
     }
   }
 );
