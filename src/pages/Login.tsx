@@ -156,7 +156,11 @@ const Login = () => {
           <CardFooter className="flex flex-col space-y-4">
             <div className="text-sm text-center text-muted-foreground">
               Don't have an account?{" "}
-              <Link to="/register" className="text-primary hover:underline">
+              <Link
+                to="/register"
+                state={{ previousPath: previousPath }}
+                className="text-primary hover:underline"
+              >
                 Sign up
               </Link>
             </div>

@@ -570,7 +570,11 @@ const Register = () => {
           <CardFooter className="flex flex-col space-y-2 border-t pt-4">
             <div className="text-sm text-center text-muted-foreground">
               Already have an account?{" "}
-              <Link to="/login" className="text-primary hover:underline">
+              <Link
+                to="/login"
+                state={{ previousPath: previousPath }}
+                className="text-primary hover:underline"
+              >
                 Sign in
               </Link>
             </div>

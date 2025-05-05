@@ -1,9 +1,13 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useAppSelector } from "@/store";
 import { Button } from "@/components/ui/button";
 
 const Index = () => {
   const { isAuthenticated } = useAppSelector((state) => state.auth);
+  const location = useLocation();
+  
+  // Create state object to pass to login/register routes
+  const navigationState = { previousPath: location.pathname };
 
   return (
     <div className="min-h-screen flex flex-col font-playfair">
@@ -25,10 +29,10 @@ const Index = () => {
               </Link>
             ) : (
               <>
-                <Link to="/login">
+                <Link to="/login" state={navigationState}>
                   <Button variant="ghost">Sign In</Button>
                 </Link>
-                <Link to="/register">
+                <Link to="/register" state={navigationState}>
                   <Button>Register</Button>
                 </Link>
               </>
@@ -60,10 +64,10 @@ const Index = () => {
                 </Link>
               ) : (
                 <>
-                  <Link to="/register">
+                  <Link to="/register" state={navigationState}>
                     <Button size="lg">Get Started</Button>
                   </Link>
-                  <Link to="/login">
+                  <Link to="/login" state={navigationState}>
                     <Button variant="outline" size="lg">
                       Sign In
                     </Button>
@@ -170,12 +174,14 @@ const Index = () => {
               </Link>
               <Link
                 to="/login"
+                state={navigationState}
                 className="text-sm text-muted-foreground hover:text-foreground"
               >
                 Login
               </Link>
               <Link
                 to="/register"
+                state={navigationState}
                 className="text-sm text-muted-foreground hover:text-foreground"
               >
                 Register

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import API from "@/lib/axios";
 import { ApiResponse } from "@/types/api";
 
@@ -23,6 +23,16 @@ const ForgotPassword = () => {
   const [isEmailSent, setIsEmailSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
+  const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Store the previous location for back button
+  const previousPath = location.state?.previousPath || "/login";
+
+  // Handle back button click
+  const handleBack = () => {
+    navigate(previousPath);
+  };
 
   const validateEmail = (email: string) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -69,7 +79,31 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-muted/50 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-muted/50 px-4 relative">
+      <div className="absolute top-4 left-4">
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          onClick={handleBack}
+          className="flex items-center gap-1 text-muted-foreground hover:text-foreground"
+        >
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            width="16" 
+            height="16" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="2" 
+            strokeLinecap="round" 
+            strokeLinejoin="round"
+          >
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+          </svg>
+          Back
+        </Button>
+      </div>
+      
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-primary">
